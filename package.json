@@ -6,7 +6,8 @@
     "test": "jest",
     "doc": "jsdoc -c jsdoc.json",
     "build": "babel src --out-dir dist",
-    "start": "node dist/main.js"
+    "start": "node dist/main.js",
+    "version": "version --patch"
   },
   "keywords": [],
   "author": "Garrett Griffin-Morales",
