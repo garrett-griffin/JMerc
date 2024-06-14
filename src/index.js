@@ -1,11 +1,13 @@
-const express = require('express');
-const mercatorio = require('./api/mercatorio');
+// index.js
+require('dotenv').config();
+require('reflect-metadata');
 
-const app = express();
-const port = 3000;
+const Client = require('./api/client');
+const Turn = require('./models/turn');
+const TownsAPI = require('./api/towns');
 
-app.use('/api/mercatorio', mercatorio);
-
-app.listen(port, () => {
-    console.log(`JMerc API Wrapper listening at http://localhost:${port}`);
-});
+module.exports = {
+    Client,
+    Turn,
+    TownsAPI
+};
