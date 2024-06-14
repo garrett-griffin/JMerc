@@ -1,12 +1,13 @@
 {
   "name": "jmerc",
   "version": "1.0.1",
-  "main": "index.js",
+  "main": "dist/index.js",
   "scripts": {
     "test": "jest",
     "doc": "jsdoc -c jsdoc.json",
     "build": "babel src --out-dir dist",
-    "start": "node dist/main.js"
+    "start": "node dist/main.js",
+    "version": "version --patch"
   },
   "keywords": [],
   "author": "",
