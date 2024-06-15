@@ -6,8 +6,7 @@
     "test": "jest",
     "doc": "jsdoc -c jsdoc.json",
     "build": "babel src --out-dir dist",
-    "start": "node dist/main.js",
-    "version": "version --patch"
+    "start": "node dist/main.js"
   },
   "keywords": [],
   "author": "",

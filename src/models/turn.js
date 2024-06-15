@@ -1,8 +1,12 @@
-const BaseModel = require('./baseModel');
+const { Expose, plainToClass } = require('class-transformer');
 
-class Turn extends BaseModel {
-    static rootUrl() {
-        return 'api/clock';
+class Turn {
+    @Expose() turn;
+    @Expose() month;
+    @Expose() year;
+
+    static modelValidate(data) {
+        return plainToClass(Turn, data);
     }
 }
 
