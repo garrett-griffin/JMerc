@@ -52,7 +52,8 @@ jobs:
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git checkout -b version-bump-branch
           npm version patch -m "CI: Bump version to %s [skip ci]"
-          git push https://github-actions:${{ secrets.PAT }}@github.com/garrett-griffin/JMerc.git version-bump-branch
+          git pull --rebase origin version-bump-branch || git pull --rebase origin main
+          git push https://${{ secrets.PAT }}@github.com/${{ github.repository }} version-bump-branch
 
       - name: Create pull request
         uses: peter-evans/create-pull-request@v3
