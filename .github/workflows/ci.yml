@@ -81,7 +81,7 @@ jobs:
           git push https://${{ secrets.PAT }}@github.com/${{ github.repository }} version-bump-branch
 
       - name: Create pull request
-        uses: peter-evans/create-pull-request@v3
+        uses: peter-evans/create-pull-request@v6
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           branch: version-bump-branch
@@ -89,14 +89,16 @@ jobs:
           body: "Automated version bump by GitHub Actions."
           base: main
 
-      - name: Merge pull request
-        id: merge_pull_request
-        uses: peter-evans/merge-pull-request@v2
+      - name: Automerge
+        uses: reitermarkus/automerge@v2
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          pull-number: ${{ steps.create_pull_request.outputs.pull_number }}
+          token: ${{ secrets.MY_GITHUB_TOKEN }}
           merge-method: squash
-          commit-title: "CI: Merged version bump"
+          do-not-merge-labels: never-merge
+          required-labels: automerge
+          pull-request: ${{ github.event.inputs.pull-request }}
+          review: ${{ github.event.inputs.review }}
+          dry-run: true
 
   release:
     needs: version-bump
