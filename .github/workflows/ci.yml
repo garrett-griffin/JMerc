@@ -45,12 +45,14 @@ jobs:
 
       - name: Bump version and push tag
         id: bump_version
+        env:
+          PAT: ${{ secrets.PAT }}
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git checkout -b version-bump-branch
           npm version patch -m "CI: Bump version to %s [skip ci]"
-          git push origin version-bump-branch
+          git push https://github-actions:${{ secrets.PAT }}@github.com/garrett-griffin/JMerc.git version-bump-branch
 
       - name: Create pull request
         uses: repo-sync/pull-request@v2
