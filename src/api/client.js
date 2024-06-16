@@ -1,6 +1,7 @@
 const axios = require('axios');
 const TurnsAPI = require('./turns');
 const PlayerAPI = require('./players');
+const TownsAPI = require('./towns');
 
 /**
  * Client for interacting with the Mercatorio API.
@@ -96,6 +97,25 @@ class Client {
     async getPlayer() {
         const playerAPI = new PlayerAPI(this);
         return await playerAPI.get();
+    }
+
+    get Towns() {
+        return new TownsAPI(this);
+    }
+
+    async getTowns() {
+        const townsAPI = new TownsAPI(this);
+        return await townsAPI.getAll();
+    }
+
+    /**
+     * Get data for a town.
+     * @param {number} id - The ID of the town.
+     * @returns {Promise<Town>} The data for the town.
+     */
+    async getTown(id) {
+        const townsAPI = new TownsAPI(this);
+        return await townsAPI.getTown(id);
     }
 }
 
