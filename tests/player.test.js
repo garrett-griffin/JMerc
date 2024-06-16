@@ -1,18 +1,19 @@
 const axios = require('axios');
 const MockAdapter = require('axios-mock-adapter');
 const Client = require('../src/api/client');
+const PlayersAPI = require('../src/api/players');
 const { Player } = require('../src/models/player');
 
 describe('Player', () => {
     const user = 'testuser';
     const token = 'testtoken';
     const baseUrl = 'https://play.mercatorio.io/';
-    let mock, client, player;
+    let mock, client, playersAPI;
 
     beforeEach(() => {
         mock = new MockAdapter(axios);
         client = new Client(user, token);
-        player = new Player(client);
+        playersAPI = new PlayersAPI(client);
     });
 
     afterEach(() => {
@@ -29,7 +30,7 @@ describe('Player', () => {
         };
         mock.onGet(`${baseUrl}api/player`).reply(200, response);
 
-        const playerData = await player.get();
+        const playerData = await playersAPI.get();
         expect(playerData).toBeInstanceOf(Player);
         expect(playerData.username).toBe('Player1');
         expect(playerData.household.name).toBe('Household1');
@@ -38,6 +39,6 @@ describe('Player', () => {
     it('should handle GET request errors', async () => {
         mock.onGet(`${baseUrl}api/player`).reply(500);
 
-        await expect(player.get()).rejects.toThrow('Failed to fetch player data: Failed to fetch resource: GET api/player failed: Request failed with status code 500');
+        await expect(playersAPI.get()).rejects.toThrow('Failed to fetch player data: GET api/player failed: Request failed with status code 500');
     });
 });
