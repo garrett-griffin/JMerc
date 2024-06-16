@@ -83,7 +83,7 @@ jobs:
       - name: Create pull request
         uses: peter-evans/create-pull-request@v6
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.PAT }}
           branch: version-bump-branch
           title: "CI: Bump version"
           body: "Automated version bump by GitHub Actions."
@@ -92,7 +92,7 @@ jobs:
       - name: Automerge
         uses: reitermarkus/automerge@v2
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.PAT }}
           merge-method: squash
           do-not-merge-labels: never-merge
           pull-request: ${{ github.event.inputs.pull-request }}
