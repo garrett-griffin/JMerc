@@ -19,6 +19,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Ensure all history is fetched
 
       - name: Set up Node.js
         uses: actions/setup-node@v4
@@ -34,9 +36,6 @@ jobs:
       - name: Test project
         run: npm test
 
-      - name: Prepare dist folder for release
-        run: npm run build
-
       - name: Commit changes
         run: |
           git config --global user.name "github-actions[bot]"
@@ -49,8 +48,19 @@ jobs:
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git checkout -b version-bump-branch
           npm version patch -m "CI: Bump version to %s [skip ci]"
-          git push --follow-tags
+          git push origin version-bump-branch
+
+      - name: Create pull request
+        uses: repo-sync/pull-request@v2
+        with:
+          destination_branch: main
+          pr_title: "CI: Bump version"
+          pr_body: "Automated version bump by GitHub Actions."
+          pr_draft: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   release:
     needs: build
@@ -63,6 +73,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Set up Node.js
         uses: actions/setup-node@v4
