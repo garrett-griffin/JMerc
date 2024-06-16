@@ -36,6 +36,31 @@ jobs:
       - name: Test project
         run: npm test
 
+  version-bump:
+    needs: build
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [20]
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build project
+        run: npm run build
+
       - name: Commit changes
         run: |
           git config --global user.name "github-actions[bot]"
@@ -64,8 +89,17 @@ jobs:
           body: "Automated version bump by GitHub Actions."
           base: main
 
+      - name: Merge pull request
+        id: merge_pull_request
+        uses: peter-evans/merge-pull-request@v2
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          pull-number: ${{ steps.create_pull_request.outputs.pull_number }}
+          merge-method: squash
+          commit-title: "CI: Merged version bump"
+
   release:
-    needs: build
+    needs: version-bump
     runs-on: ubuntu-latest
 
     strategy:
