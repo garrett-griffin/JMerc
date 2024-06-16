@@ -55,14 +55,13 @@ jobs:
           git push https://github-actions:${{ secrets.PAT }}@github.com/garrett-griffin/JMerc.git version-bump-branch
 
       - name: Create pull request
-        uses: repo-sync/pull-request@v2
+        uses: peter-evans/create-pull-request@v3
         with:
-          destination_branch: main
-          pr_title: "CI: Bump version"
-          pr_body: "Automated version bump by GitHub Actions."
-          pr_draft: false
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+          branch: version-bump-branch
+          title: "CI: Bump version"
+          body: "Automated version bump by GitHub Actions."
+          base: main
 
   release:
     needs: build
