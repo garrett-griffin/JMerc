@@ -1,5 +1,6 @@
 const axios = require('axios');
 const TurnsAPI = require('./turns');
+const PlayerAPI = require('./players');
 
 /**
  * Client for interacting with the Mercatorio API.
@@ -86,6 +87,15 @@ class Client {
     async getTurn() {
         const turnAPI = new TurnsAPI(this);
         return await turnAPI.get();
+    }
+
+    get Player() {
+        return new PlayerAPI(this);
+    }
+
+    async getPlayer() {
+        const playerAPI = new PlayerAPI(this);
+        return await playerAPI.get();
     }
 }
 

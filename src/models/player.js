@@ -1,5 +1,4 @@
-const { plainToClass, Expose, Type } = require('class-transformer');
-const BaseModel = require('./baseModel');
+const { plainToInstance, Expose, Type } = require('class-transformer');
 const { Skill, Inventory } = require('./common');
 
 class Household {
@@ -58,28 +57,15 @@ class NotificationSettings {
     @Expose() mutes;
 }
 
-class Player extends BaseModel {
+class Player {
     @Expose() username;
     @Type(() => Household) @Expose() household;
     @Expose() discord_id;
     @Type(() => Settings) @Expose() settings;
     @Expose() active;
 
-    static rootUrl() {
-        return 'api/player';
-    }
-
-    /**
-     * Fetches the player data.
-     * @returns {Promise<Player>} The player data.
-     */
-    async get() {
-        try {
-            const response = await super.get();
-            return plainToClass(Player, response);
-        } catch (error) {
-            throw new Error(`Failed to fetch player data: ${error.message}`);
-        }
+    static modelValidate(data) {
+        return plainToInstance(Player, data);
     }
 }
 
