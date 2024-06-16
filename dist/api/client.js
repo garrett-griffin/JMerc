@@ -10,6 +10,7 @@ function _toPrimitive(t, r) { if ("object" != typeof t || !t) return t; var e = 
 var axios = require('axios');
 var TurnsAPI = require('./turns');
 var PlayerAPI = require('./players');
+var TownsAPI = require('./towns');
 
 /**
  * Client for interacting with the Mercatorio API.
@@ -217,6 +218,58 @@ var Client = /*#__PURE__*/function () {
     }
     return getPlayer;
   }();
+  _proto.getTowns = /*#__PURE__*/function () {
+    var _getTowns = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee7() {
+      var townsAPI;
+      return _regeneratorRuntime().wrap(function _callee7$(_context7) {
+        while (1) switch (_context7.prev = _context7.next) {
+          case 0:
+            townsAPI = new TownsAPI(this);
+            _context7.next = 3;
+            return townsAPI.getAll();
+          case 3:
+            return _context7.abrupt("return", _context7.sent);
+          case 4:
+          case "end":
+            return _context7.stop();
+        }
+      }, _callee7, this);
+    }));
+    function getTowns() {
+      return _getTowns.apply(this, arguments);
+    }
+    return getTowns;
+  }()
+  /**
+   * Get data for a town.
+   * @param {number} id - The ID of the town.
+   * @returns {Promise<Town>} The data for the town.
+   */
+  ;
+  _proto.getTown =
+  /*#__PURE__*/
+  function () {
+    var _getTown = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee8(id) {
+      var townsAPI;
+      return _regeneratorRuntime().wrap(function _callee8$(_context8) {
+        while (1) switch (_context8.prev = _context8.next) {
+          case 0:
+            townsAPI = new TownsAPI(this);
+            _context8.next = 3;
+            return townsAPI.getTown(id);
+          case 3:
+            return _context8.abrupt("return", _context8.sent);
+          case 4:
+          case "end":
+            return _context8.stop();
+        }
+      }, _callee8, this);
+    }));
+    function getTown(_x8) {
+      return _getTown.apply(this, arguments);
+    }
+    return getTown;
+  }();
   return _createClass(Client, [{
     key: "Turn",
     get: function get() {
@@ -226,6 +279,11 @@ var Client = /*#__PURE__*/function () {
     key: "Player",
     get: function get() {
       return new PlayerAPI(this);
+    }
+  }, {
+    key: "Towns",
+    get: function get() {
+      return new TownsAPI(this);
     }
   }]);
 }();
