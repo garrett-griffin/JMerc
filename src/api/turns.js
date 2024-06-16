@@ -1,5 +1,5 @@
 const BaseAPI = require('./baseAPI');
-const { Turn } = require('../models/turn');
+const Turn  = require('../models/turn');
 
 class TurnsAPI extends BaseAPI {
     static rootUrl() {

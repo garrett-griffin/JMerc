@@ -1,5 +1,4 @@
-const { Expose, plainToClass } = require('class-transformer');
-const { IsInt, IsString, IsOptional } = require('class-validator');
+const { Expose, plainToInstance } = require('class-transformer');
 
 /**
  * @typedef {Object} Turn
@@ -8,16 +7,20 @@ const { IsInt, IsString, IsOptional } = require('class-validator');
  * @property {number} [year]
  */
 class Turn {
-    @Expose() @IsInt turn;
-    @Expose() @IsString @IsOptional month;
-    @Expose() @IsInt @IsOptional year;
+    @Expose() turn;
+    @Expose() month;
+    @Expose() year;
 
     /**
      * @param {Object} data
      * @returns {Turn}
      */
     static modelValidate(data) {
-        return /** @type { Turn } */ plainToClass(Turn, data);
+        try {
+            return /** @type {Turn} */ plainToInstance(Turn, data);
+        } catch (errors) {
+            throw new Error('Validation failed: ' + errors);
+        }
     }
 }
 
